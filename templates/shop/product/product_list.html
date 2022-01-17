@@ -1,0 +1,57 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}
+  {% if category %}{{ category.name }}{% else %}Products{% endif %}
+{% endblock %}
+
+{% block content %}
+  <div id="sidebar">
+    <h3>Categories</h3>
+    <ul>
+      <li {% if not category %}class="selected"{% endif %}>
+        <a href="{% url "shop:product_list" %}">All</a>
+      </li>
+      {% for c in categories %}
+        <li {% if category.slug == c.slug %}class="selected"{% endif %}>
+          <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div id="main" class="product-list">
+    <h1>{% if category %}{{ category.name }}{% else %}Products{% endif %}</h1>
+    {% for product in products %}
+      <div class="item">
+
+        <div class="col-lg-6">
+            <a href="{{ product.get_absolute_url }}">
+              <img width="300" height="300" src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}"
+                   style="width: 400px; height: 450px; left: 344px; top: 85px;"
+{#              srcset="#}
+{#       products/%Y/%m/%d/flower-mobile.jpg 320w,#}
+{#       products/%Y/%m/%d/flower-wide-mobile.jpg 480w,#}
+{#       products/%Y/%m/%d/flower-tablet.jpg 768w,#}
+{#       products/%Y/%m/%d/flower-desktop.jpg 1024w,#}
+{#       products/%Y/%m/%d/flower-hires.jpg 1280w"#}
+{#     sizes="#}
+{#       (max-width: 20em) 30vw,#}
+{#       (max-width: 30em) 60vw,#}
+{#       (max-width: 40em) 90vw"#}
+              >
+            </a>
+        </div>
+
+        <div class="col-lg-6">
+            <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+        </div>
+
+        <div class="col-lg-6">
+            <br>
+            ${{ product.price }}
+        </div>
+
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}
